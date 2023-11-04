@@ -11,7 +11,7 @@ environment:
 before_build:
   - 'git submodule update --init --recursive'
   - sh: 'brew install autoconf automake'
-  - sh: 'curl https://github.com/xiph/opus/releases/download/v$OPUS_VERSION/opus-$OPUS_VERSION.tar.gz'
+  - sh: 'curl --output opus-$OPUS_VERSION.tar.gz "https://github.com/xiph/opus/releases/download/v$OPUS_VERSION/opus-$OPUS_VERSION.tar.gz"'
   - sh: 'mkdir build'
 
 build_script:
