@@ -16,7 +16,7 @@ mkdir ../build/FFmpeg_$3_$1
             --extra-cflags="-m$3-version-min=$OS_MIN -arch $1 --target=$1-apple-$3 -isysroot $(xcrun --sdk $2 --show-sdk-path)" \
             --extra-ldflags="-m$3-version-min=$OS_MIN -arch $1" \
             --arch=$1 \
-            --enable-cross-compile --disable-all --disable-x86asm --enable-avcodec --enable-avformat --enable-muxer=flv
+            --enable-cross-compile --disable-all --disable-autodetect --disable-x86asm --enable-avcodec --enable-avformat --enable-muxer=flv
 make -j$(sysctl -n hw.ncpu)
 make install
 
