@@ -5,11 +5,19 @@ clone_depth: 1
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS-Monterey
+    - OS_MIN: 12.0
 
 before_build:
   - 'git submodule update --init --recursive'
+  - sh: 'mkdir build'
 
 build_script:
+  - sh: './FFmpeg.sh arm64 iphoneos ios'
+  - sh: './FFmpeg.sh arm64 iphonesimulator ios-simulator'
+  - sh: './FFmpeg.sh x86_64 iphonesimulator ios-simulator'
+  - sh: './FFmpeg.sh arm64 appletvos tvos'
+  - sh: './FFmpeg.sh arm64 appletvsimulator tvos-simulator'
+  - sh: './FFmpeg.sh x86_64 appletvsimulator tvos-simulator'
   - sh: './SDL-ios.sh'
   - sh: './SDL-tvos.sh'
   - sh: './archive.sh'
