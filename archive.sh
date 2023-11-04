@@ -48,4 +48,24 @@ lipo -info output/FFmpeg/lib/iOS-Sim/*.a
 lipo -info output/FFmpeg/lib/tvOS/*.a
 lipo -info output/FFmpeg/lib/tvOS-Sim/*.a
 
+mkdir output/opus
+mkdir output/opus/lib
+mkdir output/opus/lib/iOS
+mkdir output/opus/lib/iOS-Sim
+mkdir output/opus/lib/tvOS
+mkdir output/opus/lib/tvOS-Sim
+
+cp -R build/opus_ios_arm64/include output/opus/include
+
+lipo build/opus_ios_*/lib/libopus.a -create -o output/opus/lib/iOS/libopus.a
+lipo build/opus_ios-simulator_*/lib/libopus.a -create -o output/opus/lib/iOS-Sim/libopus.a
+
+lipo build/opus_tvos_*/lib/libopus.a -create -o output/opus/lib/tvOS/libopus.a
+lipo build/opus_tvos-simulator_*/lib/libopus.a -create -o output/opus/lib/tvOS-Sim/libopus.a
+
+lipo -info output/opus/lib/iOS/*.a
+lipo -info output/opus/lib/iOS-Sim/*.a
+lipo -info output/opus/lib/tvOS/*.a
+lipo -info output/opus/lib/tvOS-Sim/*.a
+
 7z a moonlight-ios-deps.zip ./output/*

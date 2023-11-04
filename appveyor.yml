@@ -6,12 +6,20 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS-Monterey
       OS_MIN: 12.0
+      OPUS_VERSION: 1.4
 
 before_build:
   - 'git submodule update --init --recursive'
+  - sh: 'curl https://github.com/xiph/opus/releases/download/v$OPUS_VERSION/opus-$OPUS_VERSION.tar.gz -O opus-$OPUS_VERSION.tar.gz'
   - sh: 'mkdir build'
 
 build_script:
+  - sh: './opus.sh arm64 iphoneos ios arm-apple-darwin'
+  - sh: './opus.sh arm64 iphonesimulator ios-simulator arm-apple-darwin'
+  - sh: './opus.sh x86_64 iphonesimulator ios-simulator x86_64-apple-darwin'
+  - sh: './opus.sh arm64 appletvos tvos arm-apple-darwin'
+  - sh: './opus.sh arm64 appletvsimulator tvos-simulator arm-apple-darwin'
+  - sh: './opus.sh x86_64 appletvsimulator tvos-simulator x86_64-apple-darwin'
   - sh: './FFmpeg.sh arm64 iphoneos ios'
   - sh: './FFmpeg.sh arm64 iphonesimulator ios-simulator'
   - sh: './FFmpeg.sh x86_64 iphonesimulator ios-simulator'
