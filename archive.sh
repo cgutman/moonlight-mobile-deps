@@ -27,6 +27,12 @@ mkdir output/FFmpeg/lib/tvOS-Sim
 
 cp -R build/FFmpeg_ios_arm64/include output/FFmpeg/include
 
+# Grab the private libavcodec headers we also require for the CBS interface
+# These are not ABI stable, but that's fine since we statically link
+cp FFmpeg/libavcodec/cbs.h output/FFmpeg/include/libavcodec/
+cp FFmpeg/libavcodec/cbs_av1.h output/FFmpeg/include/libavcodec/
+cp FFmpeg/libavcodec/av1.h output/FFmpeg/include/libavcodec/
+
 lipo build/FFmpeg_ios_*/lib/libavcodec.a -create -o output/FFmpeg/lib/iOS/libavcodec.a
 lipo build/FFmpeg_ios_*/lib/libavformat.a -create -o output/FFmpeg/lib/iOS/libavformat.a
 lipo build/FFmpeg_ios_*/lib/libavutil.a -create -o output/FFmpeg/lib/iOS/libavutil.a
