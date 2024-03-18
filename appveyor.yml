@@ -4,33 +4,30 @@ clone_depth: 1
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS-Monterey
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS-Sonoma
       OS_MIN: 12.0
       OPUS_VERSION: 1.4
+      BUILD_TARGET: apple
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
+      BUILD_TARGET: android
+      NDK_VER: 26.2.11394342
 
 before_build:
   - 'git submodule update --init --recursive'
-  - sh: 'curl -LO "https://github.com/xiph/opus/releases/download/v$OPUS_VERSION/opus-$OPUS_VERSION.tar.gz"'
+  - sh: '[ "$BUILD_TARGET" != apple ] || curl -LO "https://downloads.xiph.org/releases/opus/opus-$OPUS_VERSION.tar.gz"'
+  - sh: '[ "$BUILD_TARGET" != android ] || which sdkmanager'
+  - sh: '[ "$BUILD_TARGET" != android ] || sdkmanager --install "ndk;$NDK_VER"'
+  - sh: '[ "$BUILD_TARGET" != android ] || export NDK=/usr/lib/android-sdk/ndk/$NDK_VER'
   - sh: 'mkdir build'
 
 build_script:
-  - sh: './opus.sh arm64 iphoneos ios arm-apple-darwin'
-  - sh: './opus.sh arm64 iphonesimulator ios-simulator arm-apple-darwin'
-  - sh: './opus.sh x86_64 iphonesimulator ios-simulator x86_64-apple-darwin'
-  - sh: './opus.sh arm64 appletvos tvos arm-apple-darwin'
-  - sh: './opus.sh arm64 appletvsimulator tvos-simulator arm-apple-darwin'
-  - sh: './opus.sh x86_64 appletvsimulator tvos-simulator x86_64-apple-darwin'
-  - sh: './FFmpeg.sh arm64 iphoneos ios'
-  - sh: './FFmpeg.sh arm64 iphonesimulator ios-simulator'
-  - sh: './FFmpeg.sh x86_64 iphonesimulator ios-simulator'
-  - sh: './FFmpeg.sh arm64 appletvos tvos'
-  - sh: './FFmpeg.sh arm64 appletvsimulator tvos-simulator'
-  - sh: './FFmpeg.sh x86_64 appletvsimulator tvos-simulator'
-  - sh: './SDL-ios.sh'
-  - sh: './SDL-tvos.sh'
-  - sh: './archive.sh'
+  - sh: '[ "$BUILD_TARGET" != apple ] || ./build-apple.sh'
+  - sh: '[ "$BUILD_TARGET" != android ] || ./build-android.sh'
+  - sh: '[ "$BUILD_TARGET" != apple ] || ./archive-apple.sh'
+  - sh: '[ "$BUILD_TARGET" != android ] || ./archive-android.sh'
 
 after_build:
-  - sh: appveyor PushArtifact moonlight-ios-deps.zip
+  - sh: '[ "$BUILD_TARGET" != apple ] || appveyor PushArtifact moonlight-apple-deps.zip'
+  - sh: '[ "$BUILD_TARGET" != android ] || appveyor PushArtifact moonlight-android-deps.zip'
 
 deploy: off
