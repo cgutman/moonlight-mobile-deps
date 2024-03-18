@@ -6,13 +6,12 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS-Sonoma
       OS_MIN: 12.0
-      OPUS_VERSION: 1.4
+      OPUS_VERSION: 1.5.1
       BUILD_TARGET: apple
 
 before_build:
   - 'git submodule update --init --recursive'
-  - sh: 'curl -LO "https://github.com/xiph/opus/releases/download/v$OPUS_VERSION/opus-$OPUS_VERSION.tar.gz"'
-  - sh: '[ "$BUILD_TARGET" != apple ] || brew install autoconf automake libtool wget'
+  - sh: '[ "$BUILD_TARGET" != apple ] || curl -LO "https://downloads.xiph.org/releases/opus/opus-$OPUS_VERSION.tar.gz"'
   - sh: '[ "$BUILD_TARGET" != android ] || which sdkmanager'
   - sh: '[ "$BUILD_TARGET" != android ] || sdkmanager --install "ndk;$NDK_VER"'
   - sh: '[ "$BUILD_TARGET" != android ] || export NDK=/usr/lib/android-sdk/ndk/$NDK_VER'
