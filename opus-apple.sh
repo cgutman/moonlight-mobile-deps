@@ -6,14 +6,14 @@ set -e
 # $3 - OS name (ios/tvos)
 # $4 - Opus host type
 
-tar xzf opus-$OPUS_VERSION.tar.gz
-pushd opus-$OPUS_VERSION
+pushd opus
 
 export SDKROOT=$(xcrun --sdk $2 --show-sdk-path)
 export LIBRARY_PATH="$LIBRARY_PATH:$SDKROOT/usr/lib"
 
 # Build Opus
 mkdir ../build/opus_$3_$1
+./autogen.sh
 ./configure --prefix=$PWD/../build/opus_$3_$1 \
             --disable-shared --enable-static --with-pic --disable-extra-programs --disable-doc \
             --host=$4 \
@@ -23,5 +23,6 @@ mkdir ../build/opus_$3_$1
 make -j$(sysctl -n hw.ncpu)
 make install
 
+git reset --hard
+git clean -f -d -x
 popd
-rm -rf opus-$OPUS_VERSION
