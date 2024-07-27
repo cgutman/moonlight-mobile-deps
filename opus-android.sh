@@ -34,7 +34,7 @@ function build_x86
 CPU=x86
 SYSROOT_CPU=x86
 TOOLCHAIN_BIN_PREFIX=i686-linux-android$ANDROID_API_TARGET
-ADDI_CONFIGURE_FLAGS="" # floating point for SSE optimizations
+ADDI_CONFIGURE_FLAGS=""
 build_one
 }
 
@@ -43,7 +43,7 @@ function build_x86_64
 CPU=x86_64
 SYSROOT_CPU=x86_64
 TOOLCHAIN_BIN_PREFIX=x86_64-linux-android$ANDROID_API_TARGET
-ADDI_CONFIGURE_FLAGS="" # floating point for SSE optimizations
+ADDI_CONFIGURE_FLAGS=""
 build_one
 }
 
@@ -52,7 +52,7 @@ function build_armv7
 CPU=armeabi-v7a
 SYSROOT_CPU=arm
 TOOLCHAIN_BIN_PREFIX=armv7a-linux-androideabi$ANDROID_API_TARGET
-ADDI_CONFIGURE_FLAGS="--enable-fixed-point" # fixed point for NEON, EDSP, Media
+ADDI_CONFIGURE_FLAGS=""
 build_one
 }
 
