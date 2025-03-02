@@ -2,21 +2,21 @@ set -e
 
 mkdir output
 
-mkdir output/SDL2
-mkdir output/SDL2/include
-mkdir output/SDL2/lib
-mkdir output/SDL2/lib/iOS
-mkdir output/SDL2/lib/iOS-Sim
-mkdir output/SDL2/lib/tvOS
-mkdir output/SDL2/lib/tvOS-Sim
+mkdir output/SDL3
+mkdir output/SDL3/include
+mkdir output/SDL3/lib
+mkdir output/SDL3/lib/iOS
+mkdir output/SDL3/lib/iOS-Sim
+mkdir output/SDL3/lib/tvOS
+mkdir output/SDL3/lib/tvOS-Sim
 
-cp SDL/include/*.h output/SDL2/include
+cp SDL/include/*.h output/SDL3/include
 
-cp SDL/Xcode/SDL/build/Release-iphoneos/libSDL2.a output/SDL2/lib/iOS/
-cp SDL/Xcode/SDL/build/Release-iphonesimulator/libSDL2.a output/SDL2/lib/iOS-Sim/
+cp SDL/Xcode/SDL/build/Release-iphoneos/libSDL3.a output/SDL3/lib/iOS/
+cp SDL/Xcode/SDL/build/Release-iphonesimulator/libSDL3.a output/SDL3/lib/iOS-Sim/
 
-cp SDL/Xcode/SDL/build/Release-appletvos/libSDL2.a output/SDL2/lib/tvOS/
-cp SDL/Xcode/SDL/build/Release-appletvsimulator/libSDL2.a output/SDL2/lib/tvOS-Sim/
+cp SDL/Xcode/SDL/build/Release-appletvos/libSDL3.a output/SDL3/lib/tvOS/
+cp SDL/Xcode/SDL/build/Release-appletvsimulator/libSDL3.a output/SDL3/lib/tvOS-Sim/
 
 mkdir output/FFmpeg
 mkdir output/FFmpeg/lib
