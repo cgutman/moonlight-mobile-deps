@@ -10,7 +10,7 @@ environment:
       BUILD_TARGET: apple
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
       BUILD_TARGET: android
-      NDK_VER: 27.0.12077973
+      NDK_VER: 29.0.14206865
 
 before_build:
   - 'git submodule update --init --recursive'
