@@ -1,0 +1,76 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apple:
+    name: Build Apple Dependencies
+    runs-on: macos-15
+    env:
+      OS_MIN: '12.0'
+      OPUS_VERSION: '1.5.2'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Download Opus source
+        run: curl -LO "https://downloads.xiph.org/releases/opus/opus-${OPUS_VERSION}.tar.gz"
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Build Apple dependencies
+        run: ./build-apple.sh
+
+      - name: Archive Apple dependencies
+        run: ./archive-apple.sh
+
+      - name: Upload Apple dependencies artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonlight-apple-deps
+          path: moonlight-apple-deps.zip
+
+  build-android:
+    name: Build Android Dependencies
+    runs-on: ubuntu-24.04
+    env:
+      NDK_VER: '29.0.14206865'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Install Android NDK
+        run: |
+          echo "y" | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$NDK_VER"
+          echo "NDK=$ANDROID_HOME/ndk/$NDK_VER" >> $GITHUB_ENV
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Build Android dependencies
+        run: ./build-android.sh
+
+      - name: Archive Android dependencies
+        run: ./archive-android.sh
+
+      - name: Upload Android dependencies artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonlight-android-deps
+          path: moonlight-android-deps.zip

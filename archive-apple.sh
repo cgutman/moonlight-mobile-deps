@@ -60,4 +60,6 @@ lipo -info output/opus/lib/iOS-Sim/*.a
 lipo -info output/opus/lib/tvOS/*.a
 lipo -info output/opus/lib/tvOS-Sim/*.a
 
-7z a moonlight-apple-deps.zip ./output/*
+pushd output
+zip -r -y ../moonlight-apple-deps.zip *
+popd

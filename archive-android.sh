@@ -15,4 +15,6 @@ cp opus/android/armeabi-v7a/lib/libopus.a output/opus/armeabi-v7a
 cp opus/android/x86/lib/libopus.a output/opus/x86
 cp opus/android/x86_64/lib/libopus.a output/opus/x86_64
 
-7z a moonlight-android-deps.zip ./output/*
+pushd output
+zip -r -y ../moonlight-android-deps.zip *
+popd
